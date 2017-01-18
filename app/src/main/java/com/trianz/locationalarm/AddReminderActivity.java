@@ -10,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,7 +31,6 @@ public class AddReminderActivity extends AppCompatActivity {
     private String location_name, reminder_message;
     private double location_latitude, location_longitude;
     private float radius;
-    Button addReminder;
     ImageView speechToText;
     EditText message;
     Place place;
@@ -46,47 +48,11 @@ public class AddReminderActivity extends AppCompatActivity {
         this.getSupportActionBar().setTitle(R.string.remind_me_to);
 
         message = (EditText) findViewById(R.id.reminder_msg);
-        addReminder = (Button) findViewById(R.id.add_reminder_button);
-        addReminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        message.requestFocus();
 
-                    location_name = place.getName().toString();
-                    location_latitude = place.getLatLng().latitude;
-                    location_longitude = place.getLatLng().longitude;
-                    reminder_message = message.getText().toString();
-                    radius = 1;
-
-                if(reminder_message.equals(""))
-                {
-                    Snackbar.make(v, "Set a reminder message.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-
-                else {
-
-                    if (dataIsValid()) {
-
-                        NamedGeofence geofence = new NamedGeofence();
-                        geofence.reminder_msg = reminder_message;
-                        geofence.reminder_place = location_name;
-                        geofence.latitude = location_latitude;
-                        geofence.longitude = location_longitude;
-                        geofence.radius = radius * 1000.0f;
-
-                        GeofenceController.getInstance().addGeofence(geofence, geofenceControllerListener);
-
-                    }
-
-                    else
-                    {
-                        showValidationErrorToast();
-                    }
-
-                }
-
-            }
-        });
+        if(message.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
 
         speechToText = (ImageView) findViewById(R.id.speech_to_text);
         speechToText.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +78,69 @@ public class AddReminderActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_add_reminder, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+
+            location_name = place.getName().toString();
+            location_latitude = place.getLatLng().latitude;
+            location_longitude = place.getLatLng().longitude;
+            reminder_message = message.getText().toString();
+            radius = 1;
+
+            if(reminder_message.equals(""))
+            {
+                Snackbar.make(getWindow().getDecorView(), "Set a reminder message.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+
+            else {
+
+                if (dataIsValid()) {
+
+                    NamedGeofence geofence = new NamedGeofence();
+                    geofence.reminder_msg = reminder_message;
+                    geofence.reminder_place = location_name;
+                    geofence.latitude = location_latitude;
+                    geofence.longitude = location_longitude;
+                    geofence.radius = radius * 1000.0f;
+
+                    GeofenceController.getInstance().addGeofence(geofence, geofenceControllerListener);
+
+                }
+
+                else
+                {
+                    showValidationErrorToast();
+                }
+
+            }
+
+
+
+
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     @Override
     public boolean onSupportNavigateUp() {

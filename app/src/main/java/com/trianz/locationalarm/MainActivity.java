@@ -432,7 +432,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     };
 
     private void refresh() {
-        remindersListAdapter.notifyDataSetChanged();
+
+        if(GeofenceController.getInstance().getNamedGeofences().isEmpty())
+        {
+            reminderError.setVisibility(View.VISIBLE);
+        }
+        else if(GeofenceController.getInstance().getNamedGeofences().size() == 1)
+        {
+           recyclerViewSetter();
+        }
+      else {
+
+            remindersListAdapter.notifyDataSetChanged();
+        }
 
     }
 

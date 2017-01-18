@@ -66,14 +66,14 @@
                 android:textSize="20sp"
                 android:paddingTop="10dp"
                 android:paddingBottom="3dp"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimaryDark"/>
 
             <View
                 android:layout_width="50dp"
                 android:layout_height="1dp"
                 android:paddingBottom="5dp"
                 android:layout_gravity="center"
-                android:background="@color/colorPrimary"/>
+                android:background="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/reminder_error_msg"
@@ -85,7 +85,7 @@
                 android:paddingTop="30dp"
                 android:paddingBottom="3dp"
                 android:visibility="gone"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@color/secondary_text"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/reminders_recyclerView"
