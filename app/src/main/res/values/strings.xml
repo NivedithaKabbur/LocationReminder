@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">LocationAlarm</string>
+    <string name="app_name">Location Reminder</string>
+
+    <string name="GPSAlertDialogTitle">GPS Settings</string>
+    <string name="GPSAlertDialogMessage">Please turn on the GPS</string>
+    <string name="action_settings">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="Toast.Validation">Please enter valid data for all fields</string>
+
+    <string name="AreYouSure">Delete?</string>
+    <string name="Yes">Yes</string>
+       <string name="No">No</string>
+
+    <string name="Toast_error">Error</string>
+
+    <string name="remind_me_to">Remind me to...</string>
+
+    <string name="turn_on_internet">Not connected to internet</string>
+    <string name="turn_on_gps">Turn on GPS to </string>
+    <string name="ok">OK</string>
+
 </resources>
