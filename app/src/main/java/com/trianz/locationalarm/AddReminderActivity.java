@@ -43,6 +43,7 @@ public class AddReminderActivity extends AppCompatActivity {
 
         place  =  getIntent().getParcelableExtra("reminder_place");
 
+        this.getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.theme_background));
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
         this.getSupportActionBar().setTitle(R.string.remind_me_to);
@@ -104,8 +105,7 @@ public class AddReminderActivity extends AppCompatActivity {
 
             if(reminder_message.equals(""))
             {
-                Snackbar.make(getWindow().getDecorView(), "Set a reminder message.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Toast.makeText(AddReminderActivity.this, AddReminderActivity.this.getString(R.string.add_reminder_error), Toast.LENGTH_SHORT).show();
             }
 
             else {

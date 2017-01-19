@@ -7,14 +7,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
+
 import android.content.pm.PackageManager;
 import android.location.Location;
 
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
+
 import android.os.Build;
 import android.os.Parcelable;
 
@@ -92,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mBottomSheetBehavior1.setPeekHeight(400);
 
         reminderError = (TextView) findViewById(R.id.reminder_error_msg);
+
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.theme_background));
 
         if(!isNetworkAvailable()) {
 

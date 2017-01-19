@@ -17,7 +17,9 @@
     <string name="remind_me_to">Remind me to...</string>
 
     <string name="turn_on_internet">Not connected to internet</string>
-    <string name="turn_on_gps">Turn on GPS to get reminders</string>
+    <string name="turn_on_gps">Turn on GPS</string>
     <string name="ok">OK</string>
+
+    <string name="add_reminder_error">Please enter reminder message</string>
 
 </resources>
