@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 
 import android.net.ConnectivityManager;
@@ -130,8 +131,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if(selectedPlace == null)
                 {
-                    Snackbar.make(view, "Select a reminder location.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Snackbar snackbar = Snackbar.make(view,"Select a reminder location",Snackbar.LENGTH_SHORT);
+                    View snackbarView = snackbar.getView();
+                    snackbarView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    TextView tv = (TextView)snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                    snackbar.show();
                 }
 
                 else {
