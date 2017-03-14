@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LocationAlarm.iml" filepath="$PROJECT_DIR$/LocationAlarm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LocationReminder.iml" filepath="$PROJECT_DIR$/LocationReminder.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

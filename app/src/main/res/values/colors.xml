@@ -13,5 +13,6 @@
     <color name="divider">#BDBDBD</color>
 
     <color name="light_grey">#c0c0c0</color>
+    <color name="red">#f22613</color>
 
 </resources>

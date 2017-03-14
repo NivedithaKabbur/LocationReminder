@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private RemindersListAdapter remindersListAdapter;
     static final int SET_REMINDER_REQUEST = 1; // The request code
     TextView reminderError;
+    int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,16 +98,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if(!isNetworkAvailable()) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.turn_on_internet)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                            MainActivity.this.finish();
-                        }
-                    }).setCancelable(false)
-                    .create()
-                    .show();
+            Snackbar snackbar = Snackbar.make(reminderError,"No Internet Connection",Snackbar.LENGTH_INDEFINITE);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(getResources().getColor(R.color.red));
+            snackbar.show();
         }
 
 
@@ -117,11 +112,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
-                            MainActivity.this.finish();
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            MainActivity.this.startActivity(intent);
                         }
-                    }).setCancelable(false)
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                      MainActivity.this.finish();
+                }
+            }).setCancelable(false)
                     .create()
                     .show();
+
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -134,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Snackbar snackbar = Snackbar.make(view,"Select a reminder location",Snackbar.LENGTH_SHORT);
                     View snackbarView = snackbar.getView();
                     snackbarView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                    TextView tv = (TextView)snackbarView.findViewById(android.support.design.R.id.snackbar_text);
                     snackbar.show();
                 }
 
@@ -211,19 +212,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-      /*  List<NamedGeofence> remindersOnMap = new ArrayList<>();
-        remindersOnMap = GeofenceController.getInstance().getNamedGeofences();
-
-        for(int i=0; i< remindersOnMap.size(); i++)
-        {
-            double latitude = remindersOnMap.get(i).latitude;
-            double longitude = remindersOnMap.get(i).longitude;
-            String reminder = remindersOnMap.get(i).reminder_msg;
-            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                    .title(reminder).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-
-        }  */
 
 
         //Initialize Google Play Services
@@ -354,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } else {
 
                     // Permission denied, Disable the functionality that depends on this permission.
-                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+                   MainActivity.this.finish();
                 }
                 return;
             }
