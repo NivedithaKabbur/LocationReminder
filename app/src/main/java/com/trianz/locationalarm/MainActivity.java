@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 
 import android.net.ConnectivityManager;
@@ -47,7 +46,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -57,6 +55,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.trianz.locationalarm.Utils.CustomPlaceAutoCompleteFragment;
 import com.trianz.locationalarm.Utils.GeofenceController;
 import com.trianz.locationalarm.Utils.NamedGeofence;
 
@@ -156,7 +155,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+//        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+//                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        CustomPlaceAutoCompleteFragment autocompleteFragment = (CustomPlaceAutoCompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {

@@ -36,8 +36,9 @@
                 android:id="@+id/place_autocomplete_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                />
+                android:name="com.trianz.locationalarm.Utils.CustomPlaceAutoCompleteFragment"
+                >
+                </fragment>
 
         </android.support.v7.widget.CardView>
 
@@ -104,6 +105,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_24dp" />
-
 
 </android.support.design.widget.CoordinatorLayout>
