@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 public class GeofenceController implements GoogleApiClient.ConnectionCallbacks {
 
-// region Properties
-
   private final String TAG = GeofenceController.class.getName();
 
   Boolean connectedFlag=false;
@@ -34,22 +32,14 @@ public class GeofenceController implements GoogleApiClient.ConnectionCallbacks {
   private Gson gson;
   private SharedPreferences prefs;
   private GeofenceControllerListener listener;
-
   private List<NamedGeofence> namedGeofences;
-
   public List<NamedGeofence> getNamedGeofences() {
     return namedGeofences;
   }
-
   private List<NamedGeofence> namedGeofencesToRemove;
   private List<NamedGeofence> namedGeofencesToAdd;
-
   private Geofence geofenceToAdd;
   private NamedGeofence namedGeofenceToAdd;
-
-// endregion
-
-// region Shared Instance
 
   private static GeofenceController INSTANCE;
 
@@ -57,13 +47,8 @@ public class GeofenceController implements GoogleApiClient.ConnectionCallbacks {
     if (INSTANCE == null) {
       INSTANCE = new GeofenceController();
     }
-
     return INSTANCE;
   }
-
-// endregion
-
-// region Public
 
   public void init(Context context) {
     this.context = context.getApplicationContext();
@@ -81,51 +66,21 @@ public class GeofenceController implements GoogleApiClient.ConnectionCallbacks {
     loadGeofences();
   }
 
-/*
- public void addGeofences(List<NamedGeofence> namedGeofences, GeofenceControllerListener listener) {
- this.namedGeofencesToAdd = namedGeofences;
- this.geofenceToAdd = namedGeofence.geofence();
- this.listener = listener;
- System.out.println("in addgeofence " + namedGeofence.name);
-
-//connectWithCallbacks(connectionAddListener);
- onCommandAdd();
- }*/
 
   public void addGeofence(NamedGeofence namedGeofence, GeofenceControllerListener listener) {
     this.namedGeofenceToAdd = namedGeofence;
     this.geofenceToAdd = namedGeofence.geofence();
     this.listener = listener;
     System.out.println("in addgeofence "+ namedGeofence.reminder_msg);
-
-//connectWithCallbacks(connectionAddListener);
     onCommandAdd(namedGeofence);
   }
 
   public void removeGeofences(List<NamedGeofence> namedGeofencesToRemove, GeofenceControllerListener listener) {
     this.namedGeofencesToRemove = namedGeofencesToRemove;
     this.listener = listener;
-
-//connectWithCallbacks(connectionRemoveListener);
     onCommandRemove();
   }
 
-  public void removeAllGeofences(GeofenceControllerListener listener) {
-
-    namedGeofencesToRemove = new ArrayList<>();
-    for (NamedGeofence namedGeofence : namedGeofences) {
-      namedGeofencesToRemove.add(namedGeofence);
-    }
-    this.listener = listener;
-
-//connectWithCallbacks(connectionRemoveListener);
-    onCommandRemove();
-
-  }
-
-// endregion
-
-// region Private
 
   private void loadGeofences() {
     // Loop over all geofence keys in prefs and add to namedGeofences
@@ -135,21 +90,10 @@ public class GeofenceController implements GoogleApiClient.ConnectionCallbacks {
       NamedGeofence namedGeofence = gson.fromJson(jsonString, NamedGeofence.class);
       namedGeofences.add(namedGeofence);
     }
-
-// Sort namedGeofences by name
+    // Sort namedGeofences by name
     Collections.sort(namedGeofences);
 
   }
-
-/*private void connectWithCallbacks(GoogleApiClient.ConnectionCallbacks callbacks) {
- System.out.println("in making connection");
- googleApiClient = new GoogleApiClient.Builder(context)
- .addApi(LocationServices.API)
- .addConnectionCallbacks(callbacks)
- .addOnConnectionFailedListener(connectionFailedListener)
- .build();
- googleApiClient.connect();
- }*/
 
   private GeofencingRequest getAddGeofencingRequest(NamedGeofence namedGeofence) {
     List<Geofence> geofencesToAdd = new ArrayList<>();
@@ -195,10 +139,6 @@ public class GeofenceController implements GoogleApiClient.ConnectionCallbacks {
       listener.onError();
     }
   }
-
-// endregion
-
-// region ConnectionCallbacks
 
   private void onCommandAdd(final NamedGeofence namedGeofence){
     while(connectedFlag==false);
@@ -253,79 +193,6 @@ public class GeofenceController implements GoogleApiClient.ConnectionCallbacks {
     }
   }
 
-/* private GoogleApiClient.ConnectionCallbacks connectionAddListener = new GoogleApiClient.ConnectionCallbacks() {
- @Override
- public void onConnected(Bundle bundle) {
- System.out.println("in onConnected");
- try {
- Intent intent = new Intent(context, AreWeThereIntentService.class);
- PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
- PendingResult<Status> result = LocationServices.GeofencingApi.addGeofences(googleApiClient, getAddGeofencingRequest(), pendingIntent);
- result.setResultCallback(new ResultCallback<Status>() {
- @Override
- public void onResult(Status status) {
- if (status.isSuccess()) {
- System.out.println("in success");
- saveGeofence();
- } else {
- Log.e(TAG, "Registering geofence failed: " + status.getStatusMessage() + " : " + status.getStatusCode());
- sendError();
- }
- }
- });
- }catch(SecurityException se){
- se.printStackTrace();
- }catch (Exception e){
- e.printStackTrace();
- }
- }
-
-@Override
- public void onConnectionSuspended(int i) {
- Log.e(TAG, "Connecting to GoogleApiClient suspended.");
- sendError();
- }
- };*/
-
-  private GoogleApiClient.ConnectionCallbacks connectionRemoveListener = new GoogleApiClient.ConnectionCallbacks() {
-    @Override
-    public void onConnected(Bundle bundle) {
-      List<String> removeIds = new ArrayList<>();
-      for (NamedGeofence namedGeofence : namedGeofencesToRemove) {
-        removeIds.add(namedGeofence.id);
-      }
-
-      if (removeIds.size() > 0) {
-        try {
-          PendingResult<Status> result = LocationServices.GeofencingApi.removeGeofences(googleApiClient, removeIds);
-          result.setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(Status status) {
-              if (status.isSuccess()) {
-                removeSavedGeofences();
-              } else {
-                Log.e(TAG, "Removing geofence failed: " + status.getStatusMessage());
-                sendError();
-              }
-            }
-          });
-        }catch(Exception e){
-          e.printStackTrace();
-        }
-      }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-      Log.e(TAG, "Connecting to GoogleApiClient suspended.");
-      sendError();
-    }
-  };
-
-// endregion
-
-// region OnConnectionFailedListener
-
   private GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -352,15 +219,8 @@ public class GeofenceController implements GoogleApiClient.ConnectionCallbacks {
 
   }
 
-// endregion
-
-// region Interfaces
-
   public interface GeofenceControllerListener {
     void onGeofencesUpdated();
     void onError();
   }
-
-// end region
-
 }

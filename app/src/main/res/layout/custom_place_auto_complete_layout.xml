@@ -19,6 +19,8 @@
         android:background="@android:color/transparent"
         android:focusable="false"
         android:maxLines="1"
+        android:hint="Search Reminder Location"
+        android:textColorHint="@android:color/white"
         android:scrollHorizontally="true"
         android:ellipsize="end"
         android:inputType="text"

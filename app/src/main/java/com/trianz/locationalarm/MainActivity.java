@@ -37,6 +37,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -59,6 +60,7 @@ import com.trianz.locationalarm.Utils.CustomPlaceAutoCompleteFragment;
 import com.trianz.locationalarm.Utils.GeofenceController;
 import com.trianz.locationalarm.Utils.NamedGeofence;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
         View bottomSheet = findViewById(R.id.bottom_sheet1);
@@ -95,14 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.theme_background));
 
-        if(!isNetworkAvailable()) {
-
-            Snackbar snackbar = Snackbar.make(reminderError,"No Internet Connection",Snackbar.LENGTH_INDEFINITE);
-            View snackbarView = snackbar.getView();
-            snackbarView.setBackgroundColor(getResources().getColor(R.color.red));
-            snackbar.show();
-        }
-
+        checkInternetAvailability();
 
         if(!isLocationEnabled(this)) {
 
@@ -132,9 +128,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 if(selectedPlace == null)
                 {
-                    Snackbar snackbar = Snackbar.make(view,"Select a reminder location",Snackbar.LENGTH_SHORT);
+                    Snackbar snackbar = Snackbar.make(view,getResources().getString(R.string.select_location),Snackbar.LENGTH_SHORT);
                     View snackbarView = snackbar.getView();
-                    snackbarView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    snackbarView.setBackgroundColor(getResources().getColor(R.color.dark_grey));
                     snackbar.show();
                 }
 
@@ -154,9 +150,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-//        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-//                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         CustomPlaceAutoCompleteFragment autocompleteFragment = (CustomPlaceAutoCompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -447,6 +440,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toast.makeText(MainActivity.this, MainActivity.this.getString(R.string.Toast_error), Toast.LENGTH_SHORT).show();
     }
 
+    private void checkInternetAvailability() {
+
+        if(!isNetworkAvailable()) {
+
+            Snackbar snackbar = Snackbar.make(reminderError,getResources().getString(R.string.internet_error),Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry",new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            checkInternetAvailability();
+                        }
+                    });
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(getResources().getColor(R.color.dark_grey));
+            snackbar.show();
+        }
+        else
+        {
+            return;
+        }
+    }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -476,5 +491,5 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
 }
+

@@ -21,5 +21,7 @@
     <string name="ok">OK</string>
 
     <string name="add_reminder_error">Please enter reminder message</string>
+    <string name="internet_error">No Internet Connection</string>
+    <string name="select_location">Select a reminder location</string>
 
 </resources>

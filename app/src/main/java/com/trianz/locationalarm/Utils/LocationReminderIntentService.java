@@ -24,24 +24,14 @@ import java.util.Map;
 
 public class LocationReminderIntentService extends IntentService {
 
-  // region Properties
-
   private final String TAG = LocationReminderIntentService.class.getName();
 
   private SharedPreferences prefs;
   private Gson gson;
 
-  // endregion
-
-  // region Constructors
-
   public LocationReminderIntentService() {
-    super("AreWeThereIntentService");
+    super("LocationReminderIntentService");
   }
-
-  // endregion
-
-  // region Overrides
 
   @Override
   protected void onHandleIntent(Intent intent) {
@@ -66,10 +56,6 @@ public class LocationReminderIntentService extends IntentService {
       }
     }
   }
-
-  // endregion
-
-  // region Private
 
   private void onEnteredGeofences(List<String> geofenceIds) {
     for (String geofenceId : geofenceIds) {
@@ -101,7 +87,7 @@ public class LocationReminderIntentService extends IntentService {
       Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
       Notification notification = new NotificationCompat.Builder(this)
-              .setSmallIcon(R.mipmap.ic_launcher)
+              .setSmallIcon(R.mipmap.location_icon)
               .setContentTitle(contextPlace)
               .setContentText(contextMsg)
               .setContentIntent(pendingNotificationIntent)
@@ -119,6 +105,5 @@ public class LocationReminderIntentService extends IntentService {
     Log.e(TAG, "Geofencing Error: " + i);
   }
 
-  // endregion
 }
 
