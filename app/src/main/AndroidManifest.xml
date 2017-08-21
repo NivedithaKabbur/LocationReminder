@@ -22,13 +22,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Goolge Maps API Key -->
-        <!--
-            <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCuIlholclseP4XXSIY9WqFHqFTXLxk2t8" />
-        -->
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDFOzoeXPmSKDvNU_K3ABz-YRFr23uldrk" />

@@ -57,7 +57,7 @@ public class AddReminderActivity extends AppCompatActivity {
         message.requestFocus();
 
         if(message.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         }
 
         speechToText = (ImageView) findViewById(R.id.speech_to_text);
@@ -100,7 +100,7 @@ public class AddReminderActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_submit) {
 
             location_name = place.getName().toString();
             location_latitude = place.getLatLng().latitude;
@@ -117,11 +117,14 @@ public class AddReminderActivity extends AppCompatActivity {
                 TextView text = (TextView) layout.findViewById(R.id.text);
                 text.setText(AddReminderActivity.this.getString(R.string.add_reminder_error));
 
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
                 Toast toast = new Toast(getApplicationContext());
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.setDuration(Toast.LENGTH_LONG);
                 toast.setView(layout);
                 toast.show();
+
             }
 
             else {
@@ -145,11 +148,7 @@ public class AddReminderActivity extends AppCompatActivity {
                 }
 
             }
-
-
-
-
-
+            
             return true;
         }
 
@@ -228,7 +227,6 @@ public class AddReminderActivity extends AppCompatActivity {
                     ArrayList<String> text = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-                  //  message.setText(text.get(0));
                     message.setText("");
                     if (!TextUtils.isEmpty(text.get(0))) {
                         message.append(text.get(0));

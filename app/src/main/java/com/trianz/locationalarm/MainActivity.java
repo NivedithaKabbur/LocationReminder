@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         View bottomSheet = findViewById(R.id.bottom_sheet1);
         mBottomSheetBehavior1 = BottomSheetBehavior.from(bottomSheet);
         mBottomSheetBehavior1.setHideable(false);
-        mBottomSheetBehavior1.setPeekHeight(400);
+        mBottomSheetBehavior1.setPeekHeight((getWindowManager().getDefaultDisplay().getHeight())/3);
 
         reminderError = (TextView) findViewById(R.id.reminder_error_msg);
 
